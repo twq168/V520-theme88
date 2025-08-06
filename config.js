@@ -1,15 +1,20 @@
 window.settings = {
-    // API
-    api: "https://coo.hunshui.xyz",
+    // 初始为空，稍后通过 initApi 自动填充
+    api: '',
+
     // 站点名称
     title: 'HUNSHUI',
+
     // 站点描述
     description: '连接全世界',
+
     // 站点介绍 
     introduction: '我们是一个追求更可靠、安全、高效且高性价比的互联网接入方案。',
+
     // Crisp 客服系统网站 ID
     crisp_id: '',
-    // 客户端配置，只能修改 link 和 items的true/false
+
+    // 客户端配置
     clients: [
         {
             name: "iOS",
@@ -88,7 +93,8 @@ window.settings = {
             }
         },
     ],
-    // 首页描述
+
+    // 首页功能描述
     feature: {
         title: "我们使用最新的技术来提供最佳体验",
         subtitle: "我们致力于提供最可靠、安全、高效且高性价比的互联网接入方案。",
@@ -109,5 +115,33 @@ window.settings = {
                 icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAABB9JREFUeF7tm0tuFEEMhis34SbATbgBrGAJLMkKbsBNgJvkJgmO2pLl2P7tenVHyUjRRNPVVf4/P6qmuuamvfDXzQvX314BnBABb44x6Z3+7oQNf3fbsysCSOg7IRzpZBDLgawEwKLZ40i0d30pjNkAZomOYFDKyLTpBft43wwA1fCmcVkEvcsI4TTJiKLIGIbRC4CNJoOzIU7GstGRQIZQhdFVL6oAqiGeFe0BqcIo14ssgIrwUdEzYHBqwKjIACAvoHBcJXoUBgEIISAAkfjdoiMYvKiy2oQQEIBvRo9XEa5NYwhWtFo64DSovX9V4ZbXP6jZ6be3dogiQAOA+ZSZvDe1oWggCPwi5xGEJ68IQJrigCgOV1iti2NcFgAJ/nqI0blKEP4d19ycTYKYAkAb0WsUi0ZTqdb2/f8HvWNSXyn7oxRIdQA8Qn2wx5POe9KsF0TK/pUA/iQWUFkoPRBOBZAVTw6g1KD26EU14j1qJK6fBsALexIg64D0ajZVKhBOAWAJYaPvlfd0+lnXrf6y6bAdQGSsvmZ5UqcNhTu1s9KJr0UZcQkA7GUNwPJiBElHRyYVtgPQRkqR+prlQV0MpUirUKIo2AoAhTjKfw7lqJ1OBVQLtgJAxs0AEEWIVQu2AkAC0XUW4BXCTIRoCKcCKKxXhppGdWAbgM+ttR9DMvpv/tRa++Xcvg3Ax9baz34NQ3d+aa3drgKQ3RDJruWHlDo3eykwZT8gC4Bsi4pcpXqjYomuM6fTAWjPZA2P2llLbe/rfHo/c9amqJ6+9FJ1BYBoITQFQDqMnO/0Ei6a3yl0rVoi+4iW2rpELAFAg0R7dFEUoJUi9y23z9B+QWU3q+u5gCXY7cjxIIvIFEIPUnVPwHqc5zoOPRrTM4H7gOGIQeu7O0NAdWDWhkg6/MlmBEDXAZQG1pRInxGEt4UtMX5GYO0oI5u1t6OohQDI+Mp6wCtm3iKIp0vtfa89+gpcCv9MBFgAMlGQ3eSsrA7RBohlF3yeicKJOrXSAHYc1ISKaGpLY5Hn0fPDsvezEcBhrR9thbklVI5EAwp5b+nL4BC0VA3gQaozgvY0Fyf0qCzrcdm/ti2Tpo/3Z1IgooymRS/cramKvVZNEUt8NkVLALxU6IVQFWq1t/I+Lb4aAWzA8KAzlB9rCuuMAcx7OX4lBVDO7YoE78xi1/i9ALz1Qbr6dkaBNSVTV13ie1MARcIqCN6ZxW7xMwB4hZEhlQqSExXRMd3h/kdSQNobnSgtH2A+Okbnk4fFz4qAaHaQkLIgkPCpBzZnRUA2GmRq8P/8own5YyqvRk7x+oxpMFPEo7TI3C/bTPX6LgBcIOX7ZYSzIStSwBIZneS22i/zuB5sFwA5rj7bL388OfwjqGqInQGgauPS9q8AluJ9Bp0/AHBuS1BAJyWWAAAAAElFTkSuQmCC",
             },
         ]
+    },
+
+    // ✅ 自动检测可用 API 的方法（异步）
+    initApi: async function () {
+        const apiList = [
+            "https://coo.hunshui.xyz",
+            "https://cok.hunshui.xyz",
+            "https://cop.hunshui.xyz"
+        ];
+
+        const testPath = "/api/v1/guest/comm/config"; // 请确保此路径在你的后端是存在的
+
+        for (const api of apiList) {
+            try {
+                const res = await fetch(api + testPath, { method: "GET" });
+                if (res.ok) {
+                    this.api = api;
+                    console.log(`[✔] 可用 API：${api}`);
+                    return;
+                }
+            } catch (err) {
+                console.warn(`[✘] 无法连接：${api}`);
+            }
+        }
+
+        // 所有失败，默认使用第一个
+        this.api = apiList[0];
+        console.error(`[‼] 所有 API 不可用，默认使用：${this.api}`);
     }
-}
+};
