@@ -1,6 +1,6 @@
 window.settings = {
     // API
-    api: "https://coo.hunshui.xyz",
+    api: "https://v2b.haruka.cloud",
     // 站点名称
     title: 'HUNSHUI',
     // 站点描述
