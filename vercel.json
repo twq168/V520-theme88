@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/signin", "destination": "/signin.html" },
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/signup", "destination": "/signup.html" },
+    { "source": "/shop", "destination": "/shop.html" },
+    { "source": "/forgot", "destination": "/forgot.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
