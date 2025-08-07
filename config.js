@@ -1,6 +1,6 @@
 window.settings = {
     // API
-    api: "https://cok.hunshui.xyz",
+    api: "https://coo.hunshui.xyz",
     // 站点名称
     title: 'HUNSHUI',
     // 站点描述
